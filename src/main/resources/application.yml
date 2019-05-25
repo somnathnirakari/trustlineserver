@@ -1,0 +1,12 @@
+trustline:
+  nodes: alice,bob,charlie
+  node:
+    alice:
+      endpoint: http://localhost:5555/api/trustline/transactions
+      trusts: bob
+    bob:
+      endpoint: http://localhost:6666/api/trustline/transactions
+      trusts: alice,charlie
+    charlie:
+      endpoint: http://localhost:7777/api/trustline/transactions
+      trusts: bob

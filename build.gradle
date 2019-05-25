@@ -1,0 +1,43 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.5.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'groovy'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.ripple.takehome'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    implementation 'org.codehaus.groovy:groovy:2.5.3'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.spockframework:spock-core:1.2-groovy-2.4'
+    testImplementation 'org.spockframework:spock-spring:1.2-groovy-2.4'
+}
+
+bootRun {
+	systemProperties = System.properties
+}
+
+test {
+    testLogging {
+        testLogging {
+            events "PASSED", "FAILED", "SKIPPED"
+        }
+    }
+}
