@@ -1,5 +1,6 @@
 package com.ripple.takehome.trustlineserver.service.impl;
 
+import com.ripple.takehome.trustlineserver.exception.BadRequestException;
 import com.ripple.takehome.trustlineserver.payload.TransactionRequest;
 import com.ripple.takehome.trustlineserver.service.TrustLineService;
 import com.ripple.takehome.trustlineserver.util.TransactionRouter;
@@ -27,11 +28,11 @@ public class TrustLineServiceImpl implements TrustLineService {
     @Override
     public void sendTransaction(TransactionRequest transactionRequest) {
         if (transactionRequest.getTo().equals(nodeName)) {
-            throw new RuntimeException("Invalid Request. Sender and receiver cannot be identical");
+            throw new BadRequestException("Sender and receiver cannot be identical");
         }
 
         if (!transactionRouter.doesTrustLineExistBetween(nodeName, transactionRequest.getTo())) {
-            throw new RuntimeException("Trustline does not exist between " + nodeName + " and " + transactionRequest.getTo());
+            throw new BadRequestException("Trustline does not exist between " + nodeName + " and " + transactionRequest.getTo());
         }
 
         TrustLineBalance trustLineBalance = trustLineBalanceMap.get(transactionRequest.getTo());
@@ -65,7 +66,7 @@ public class TrustLineServiceImpl implements TrustLineService {
     @Override
     public void receiveTransaction(TransactionRequest transactionRequest) {
         if (!transactionRequest.getTo().equals(nodeName)) {
-            throw new RuntimeException("Invalid Request. Invalid receiver");
+            throw new BadRequestException("Invalid receiver");
         }
         TrustLineBalance trustLineBalance = trustLineBalanceMap.get(transactionRequest.getFrom());
         if (trustLineBalance==null) {

@@ -1,5 +1,7 @@
 package com.ripple.takehome.trustlineserver.util;
 
+import com.ripple.takehome.trustlineserver.exception.NodeAddressResolutionFailureException;
+import com.ripple.takehome.trustlineserver.exception.TrustLineTransactionFailureException;
 import com.ripple.takehome.trustlineserver.payload.TransactionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,8 +60,13 @@ public class TransactionRouter {
     public void route(TransactionRequest transactionRequest) {
         String url = addressResolver.resolve(transactionRequest.getTo());
         if (url == null) {
-            throw new RuntimeException("Unable to resolve address for receiver " + transactionRequest.getTo());
+            throw new NodeAddressResolutionFailureException("Unable to resolve address for receiver " + transactionRequest.getTo());
         }
-        restUtil.postTransaction(url, transactionRequest);
+        try {
+            restUtil.postTransaction(url, transactionRequest);
+        } catch(Exception ex) {
+            throw new TrustLineTransactionFailureException("Failed to process transaction at node " +
+                    transactionRequest.getTo(), ex);
+        }
     }
 }

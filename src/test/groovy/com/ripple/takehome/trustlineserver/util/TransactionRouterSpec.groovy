@@ -1,5 +1,7 @@
 package com.ripple.takehome.trustlineserver.util
 
+import com.ripple.takehome.trustlineserver.exception.NodeAddressResolutionFailureException
+import com.ripple.takehome.trustlineserver.exception.TrustLineTransactionFailureException
 import com.ripple.takehome.trustlineserver.payload.TransactionRequest
 import org.springframework.core.env.Environment
 import spock.lang.Specification
@@ -48,8 +50,8 @@ class TransactionRouterSpec extends Specification {
         transactionRouter.route(transactionRequest)
 
         then: 'run time exception thrown'
-        RuntimeException rte = thrown()
-        rte.message == "Unable to resolve address for receiver " + transactionRequest.getTo()
+        NodeAddressResolutionFailureException narfe = thrown()
+        narfe.message == "Unable to resolve address for receiver " + transactionRequest.getTo()
 
     }
 
@@ -69,7 +71,8 @@ class TransactionRouterSpec extends Specification {
         transactionRouter.route(transactionRequest)
 
         then: 'run time exceptions thrown'
-        RuntimeException rte = thrown()
-        rte.message == "Invalid Response from " + transactionRequest.getTo()
+        TrustLineTransactionFailureException tltfe = thrown()
+        tltfe.message == "Failed to process transaction at node " +
+                transactionRequest.getTo()
     }
 }
