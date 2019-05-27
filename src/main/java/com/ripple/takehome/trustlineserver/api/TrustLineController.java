@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+/**
+ * @author Somnath Nirakari
+ */
 @RestController
 @RequestMapping("/api")
 public class TrustLineController {
@@ -19,6 +22,11 @@ public class TrustLineController {
     @Autowired
     TrustLineService trustLineService;
 
+    /**
+     * this endpoint is invoked by the client
+     * @param transactionRequest
+     * @return
+     */
     @PostMapping("/transactions")
     ResponseEntity<?> processTransaction(@Valid @RequestBody TransactionRequest transactionRequest) {
 
@@ -26,8 +34,13 @@ public class TrustLineController {
         return ResponseEntity.ok().body(new ApiResponse(true,"Success!!"));
     }
 
+    /**
+     * this endpoint is invoked by the sender node
+     * @param transactionRequest
+     * @return
+     */
     @PostMapping("/trustline/transactions")
-    ResponseEntity<?> sendTransaction(@Valid @RequestBody TransactionRequest transactionRequest) {
+    ResponseEntity<?> receiveTransaction(@Valid @RequestBody TransactionRequest transactionRequest) {
 
         trustLineService.receiveTransaction(transactionRequest);
         return ResponseEntity.ok().body(new ApiResponse(true,"Success!!"));

@@ -12,12 +12,17 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Somnath Nirakari
+ */
 @Service
 public class TrustLineServiceImpl implements TrustLineService {
 
     @Value("${node.name}")
     String nodeName;
 
+    // Ideally this should be an external component that keeps track of relationships between nodes and
+    // knows how to route transaction between them
     @Autowired
     TransactionRouter transactionRouter;
 
@@ -40,6 +45,7 @@ public class TrustLineServiceImpl implements TrustLineService {
             trustLineBalanceMap.put(transactionRequest.getTo(),new TrustLineBalance());
             trustLineBalance = trustLineBalanceMap.get(transactionRequest.getTo());
         }
+
         System.out.println("Trustline balance between " + nodeName + " and " + transactionRequest.getTo() + " is: " + trustLineBalance.getAmount());
         //LOGGER.info("Trustline balance is: " + trustLineBalance.getAmount());
 

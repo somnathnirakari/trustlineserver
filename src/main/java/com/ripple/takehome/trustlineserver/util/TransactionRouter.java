@@ -11,6 +11,10 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.*;
 
+/**
+ * Routes the transactions between trustline nodes
+ * @author Somnath Nirakari
+ */
 @Component
 public class TransactionRouter {
 
@@ -29,6 +33,12 @@ public class TransactionRouter {
         this.env = env;
     }
 
+    /**
+     * This method preprocesses each node's trustline connections to figure out each node's implicit trustlines
+     * so that future calls to {link doesTrustLineExistBetween} becomes constant time.
+     *
+     * This is basically a BFS on nodes trustline connections.
+     */
     @PostConstruct
     void init() {
         String[] nodesArr = nodes.split(",");
@@ -53,10 +63,20 @@ public class TransactionRouter {
             visited = new HashSet<>();
         }
     }
+
+    /**
+     * @param nodeA
+     * @param nodeB
+     * @return {@code true} if there exists a trustline between nodeA and nodeB else {@code false}
+     */
     public boolean doesTrustLineExistBetween(String nodeA, String nodeB) {
         return trustLineMap.getOrDefault(nodeA.toLowerCase(), new HashSet<>()).contains(nodeB.toLowerCase());
     }
 
+    /**
+     * routes the request between two trustline nodes
+     * @param transactionRequest
+     */
     public void route(TransactionRequest transactionRequest) {
         String url = addressResolver.resolve(transactionRequest.getTo());
         if (url == null) {

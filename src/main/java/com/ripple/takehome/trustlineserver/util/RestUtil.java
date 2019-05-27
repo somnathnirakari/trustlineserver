@@ -9,6 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * Utility class which acts as a wrapper for handling REST methods
+ * @author Somnath Nirakari
+ */
 @Component
 public class RestUtil {
 
@@ -19,6 +23,11 @@ public class RestUtil {
         restTemplate = restTemplateBuilder.build();
     }
 
+    /**
+     * post a transaction to receiver node
+     * @param url
+     * @param transactionRequest
+     */
     public void postTransaction(String url, TransactionRequest transactionRequest) {
         HttpEntity<TransactionRequest> request = new HttpEntity<>(transactionRequest);
 
