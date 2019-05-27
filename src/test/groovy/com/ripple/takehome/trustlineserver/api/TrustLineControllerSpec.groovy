@@ -48,7 +48,7 @@ class TrustLineControllerSpec extends Specification{
 
         then:
         noExceptionThrown()
-        resp.statusCode == HttpStatus.OK
+        resp.statusCode == HttpStatus.CREATED
     }
 
     def "TrustLineController - Client request Receiver node is unreachable"() {
@@ -83,6 +83,6 @@ class TrustLineControllerSpec extends Specification{
 
         then:
         noExceptionThrown()
-        resp.statusCode == HttpStatus.OK
+        resp.statusCode == HttpStatus.CREATED
     }
 }
