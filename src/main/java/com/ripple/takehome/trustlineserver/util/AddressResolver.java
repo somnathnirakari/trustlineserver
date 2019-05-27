@@ -21,7 +21,7 @@ public class AddressResolver {
     /**
      * resolves nodeName to its routing address
      * @param nodeName
-     * @return
+     * @return routing address
      */
     String resolve(String nodeName) {
         return env.getProperty("trustline.node." + nodeName.toLowerCase() + ".endpoint");

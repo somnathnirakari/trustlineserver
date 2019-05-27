@@ -31,7 +31,7 @@ public class TrustLineController {
     /**
      * this endpoint is invoked by the client
      * @param transactionRequest
-     * @return
+     * @return apiResponse
      */
     @PostMapping("/transactions")
     ResponseEntity<?> processTransaction(@Valid @RequestBody TransactionRequest transactionRequest) {
@@ -56,7 +56,7 @@ public class TrustLineController {
     /**
      * this endpoint is invoked by the sender node
      * @param transactionRequest
-     * @return
+     * @return apiResponse
      */
     @PostMapping("/trustline/transactions")
     ResponseEntity<?> receiveTransaction(@Valid @RequestBody TransactionRequest transactionRequest) {
